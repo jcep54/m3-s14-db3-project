@@ -134,8 +134,22 @@ async function findById(scheme_id) {
   */
 }
 
-function findSteps(scheme_id) { 
-  return 'poop'
+async function findSteps(scheme_id) { 
+  const rows = await db('schemes as sc')
+    .select(
+      'scheme_name',
+      'step_number',
+      'step_id',
+      'instructions'
+    )
+    .leftJoin('steps as st', 'sc.scheme_id','st.scheme_id')
+    .where('sc.scheme_id',scheme_id)
+    .orderBy('step_number','asc')
+  if(rows[0].step_id){
+    console.log('truthy step')
+    return rows}
+  else
+    return []
   // EXERCISE C
   /*
 
@@ -170,16 +184,22 @@ function findSteps(scheme_id) {
   */
 }
 
-function add(scheme) {
-  return 'poop'
+async function add(scheme) {
+  const [scheme_id] = await db('schemes').insert(scheme)
+  const newScheme = await findById(scheme_id)
+  return newScheme
   // EXERCISE D
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
   */
 }
 
-function addStep(scheme_id, step) { 
-  return 'poop'
+async function addStep(scheme_id, step) { 
+  const stepCopy = {...step}
+  stepCopy.scheme_id = scheme_id;
+  await db('steps').insert(stepCopy)
+  const updatedSteps = await findSteps(scheme_id)
+  return updatedSteps
   // EXERCISE E
   /*
     1E- This function adds a step to the scheme with the given `scheme_id`
