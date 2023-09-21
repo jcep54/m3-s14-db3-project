@@ -39,11 +39,36 @@ async function find() {
   */
 }
 
-function findById(scheme_id) { 
+async function findById(scheme_id) { 
+  const row = await db('schemes as sc')
+    .select(
+      'sc.scheme_id',
+    'scheme_name',
+    'step_number',
+    'step_id',
+    'instructions')
+    .leftJoin('steps as st','sc.scheme_id','st.scheme_id')
+    .where('sc.scheme_id',scheme_id)
+    .orderBy('step_number','asc')
   
+  const result = row.reduce((acc, step) =>{
+    if(step.step_id){
+      acc.steps.push({step_id: step.step_id,step_number:step.step_number, instructions: step.instructions})
+    }
+    return acc
+  }, {scheme_id:row[0].scheme_id, scheme_name:row[0].scheme_name, steps: []})
+  return result
   // EXERCISE B
   /*
     1B- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`:
+
+            select 
+            st.*,
+            scheme_name
+        from schemes as sc
+        left join steps as st
+            on sc.scheme_id = st.scheme_id
+        where sc.scheme_id = 1;
 
       SELECT
           sc.scheme_name,
@@ -109,8 +134,21 @@ function findById(scheme_id) {
   */
 }
 
-function findSteps(scheme_id) { // EXERCISE C
+function findSteps(scheme_id) { 
+  return 'poop'
+  // EXERCISE C
   /*
+
+        select 
+          scheme_name,
+          step_number,
+          step_id,
+          instructions 
+      from schemes as sc
+      left join steps as st
+          on sc.scheme_id = st.scheme_id
+      where sc.scheme_id = 1
+      order by step_number asc;
     1C- Build a query in Knex that returns the following data.
     The steps should be sorted by step_number, and the array
     should be empty if there are no steps for the scheme:
@@ -132,13 +170,17 @@ function findSteps(scheme_id) { // EXERCISE C
   */
 }
 
-function add(scheme) { // EXERCISE D
+function add(scheme) {
+  return 'poop'
+  // EXERCISE D
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
   */
 }
 
-function addStep(scheme_id, step) { // EXERCISE E
+function addStep(scheme_id, step) { 
+  return 'poop'
+  // EXERCISE E
   /*
     1E- This function adds a step to the scheme with the given `scheme_id`
     and resolves to _all the steps_ belonging to the given `scheme_id`,

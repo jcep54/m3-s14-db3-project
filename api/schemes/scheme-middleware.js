@@ -9,7 +9,7 @@ const db = require('../../data/db-config')
   }
 */
 const checkSchemeId = (req, res, next) => {
-
+  next()
 }
 
 /*
@@ -21,7 +21,7 @@ const checkSchemeId = (req, res, next) => {
   }
 */
 const validateScheme = (req, res, next) => {
-
+  next()
 }
 
 /*
@@ -34,7 +34,7 @@ const validateScheme = (req, res, next) => {
   }
 */
 const validateStep = (req, res, next) => {
-
+  next()
 }
 
 module.exports = {
